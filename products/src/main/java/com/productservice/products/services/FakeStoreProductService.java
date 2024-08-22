@@ -1,6 +1,7 @@
 package com.productservice.products.services;
 
 import com.productservice.products.dtos.ProductResponseDto;
+import com.productservice.products.exeptions.ProductNotFoundExeption;
 import com.productservice.products.models.Category;
 import com.productservice.products.models.Product;
 import org.springframework.http.HttpMethod;
@@ -22,10 +23,12 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public Product getProductById(Long Id) {
+    public Product getProductById(Long Id) throws ProductNotFoundExeption {
         ProductResponseDto dto = restTemplate.getForObject("https://fakestoreapi.com/products/" + Id, ProductResponseDto.class);
         //Convert DTO object to Product object to return this is done by a method we are creating
-        assert dto != null;
+        if(dto==null){
+            throw new ProductNotFoundExeption(Id, "No product found");
+        }
         return convertDtoToProduct(dto);
     }
 

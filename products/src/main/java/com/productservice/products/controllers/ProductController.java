@@ -1,8 +1,11 @@
 package com.productservice.products.controllers;
 
 
+import com.productservice.products.exeptions.ProductNotFoundExeption;
 import com.productservice.products.models.Product;
 import com.productservice.products.services.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,8 +26,13 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable("id") Long id) {
-        return productService.getProductById(id);
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws ProductNotFoundExeption {
+        Product product=productService.getProductById(id);
+//        if(product==null) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+        ResponseEntity<Product> responseEntity= new ResponseEntity<>(product, HttpStatus.OK);
+        return responseEntity;
     }
 
     @PutMapping("/{id}")
