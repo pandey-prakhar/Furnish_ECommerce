@@ -12,6 +12,4 @@ import java.util.Date;
 @Entity
 public class Category extends BaseModel {
     private String description;
-    private Date createdAt;
-    private Date updatedAt;
 }

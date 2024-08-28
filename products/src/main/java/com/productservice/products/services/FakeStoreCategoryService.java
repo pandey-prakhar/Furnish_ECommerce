@@ -22,7 +22,7 @@ public class FakeStoreCategoryService implements CategoryService {
     public List<Category> getAllCategories() {
         String[] categories = restTemplate.getForObject(FAKESTORE_CATEGORIES_URL, String[].class);
         List<Category> categoriesList = new ArrayList<>();
-        int idCnt= 1;
+        Long idCnt= 1L;
         for (String category : categories) {
             Category categoryObj = new Category();
             categoryObj.setDescription(category);
