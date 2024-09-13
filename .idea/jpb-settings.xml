@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DatabaseMigrationSettings" lastSelectedDirectory="products/src/main/resources/db/migration" />
+  <component name="JpaLiquibaseChangesConfig">
+    <liquibase-change category="Column" state="SAFE" location="MAIN_CHANGE_LOG" name="dropColumn" />
+    <liquibase-change category="Column" state="SAFE" location="MAIN_CHANGE_LOG" name="addNotNullConstraint" />
+    <liquibase-change category="Column" state="SAFE" location="MAIN_CHANGE_LOG" name="modifyDataType" />
+    <liquibase-change category="Sequence" state="SAFE" location="MAIN_CHANGE_LOG" name="dropSequence" />
+    <liquibase-change category="Table" state="SAFE" location="MAIN_CHANGE_LOG" name="dropTable" />
+  </component>
+</project>

@@ -32,8 +32,7 @@ public class ProductController {
 //        if(product==null) {
 //            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 //        }
-        ResponseEntity<Product> responseEntity= new ResponseEntity<>(product, HttpStatus.OK);
-        return responseEntity;
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

@@ -18,3 +18,4 @@ public class Product extends BaseModel{
     @ManyToOne
     private Category category;
 }
+

@@ -1,0 +1,2 @@
+ALTER TABLE product
+    ADD cf VARCHAR(255) NULL;
