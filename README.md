@@ -87,10 +87,7 @@ Manages email and SMS notifications. It listens for Kafka events such as user re
 - **Containerization:** Docker for microservices
 - **Cloud Platform:** AWS (Elastic Load Balancer, SES, RDS)
 
-Here are the updated installation steps for your Java Spring Boot backend application:
 
-markdown
-Copy code
 ## **Installation**
 
 1. Clone the repository:
