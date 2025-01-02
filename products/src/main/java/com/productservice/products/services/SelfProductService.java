@@ -29,12 +29,22 @@ public class SelfProductService implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        return List.of();
+        return productRepository.findAll();
     }
 
     @Override
-    public Product replaceProduct(Long Id, Product product) {
-        return null;
+    public Product replaceProduct(Long Id, Product product) throws ProductNotFoundExeption {
+        Optional<Product> existingProduct = productRepository.findById(Id);
+        if (existingProduct.isEmpty()) {
+            throw new ProductNotFoundExeption(Id, "Product does not exist to replace");
+        }
+        Product replacedProduct = existingProduct.get();
+        replacedProduct.setCategory(product.getCategory());
+        replacedProduct.setPrice(product.getPrice());
+        replacedProduct.setTitle(product.getTitle());
+        replacedProduct.setDescription(product.getDescription());
+        replacedProduct.setImage(product.getImage());
+        return productRepository.save(replacedProduct);
     }
 
     @Override
@@ -43,8 +53,12 @@ public class SelfProductService implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Long Id) {
-
+    public void deleteProduct(Long Id) throws ProductNotFoundExeption {
+        Optional<Product> productOptional = productRepository.findById(Id);
+        if (productOptional.isEmpty()) {
+            throw new ProductNotFoundExeption(Id, "Product does not exist to delete");
+        }
+        productRepository.deleteById(Id);
     }
 
     @Override
@@ -55,7 +69,7 @@ public class SelfProductService implements ProductService {
             category= categoryRepository.save(category);
             product.setCategory(category);
         }
-        else {
+        else {  
             //Category is valid.
         }
         //As fetch type is lazy as one category can have many products so we will have to fetch all details.
@@ -63,7 +77,6 @@ public class SelfProductService implements ProductService {
         Optional<Category> categoryOptional = categoryRepository.findById(savedProduct.getCategory().getId());
         Category category1 = categoryOptional.get();
         savedProduct.setCategory(category1);
-
         return savedProduct;
     }
 }

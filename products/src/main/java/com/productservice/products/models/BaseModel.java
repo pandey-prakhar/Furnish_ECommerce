@@ -11,7 +11,7 @@ import java.util.Date;
 @MappedSuperclass
 public class BaseModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)// Auto Increment generated value
     private Long id;
     private Date createdAt;
     private Date updatedAt;

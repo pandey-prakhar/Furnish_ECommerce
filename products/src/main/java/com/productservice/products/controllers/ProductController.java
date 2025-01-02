@@ -36,12 +36,18 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public Product replaceProduct(@PathVariable("id") Long id,@RequestBody Product product){
+    public Product replaceProduct(@PathVariable("id") Long id,@RequestBody Product product) throws ProductNotFoundExeption {
         return productService.replaceProduct(id, product);
     }
 
     @PostMapping
     public Product createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) throws ProductNotFoundExeption {
+        productService.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
