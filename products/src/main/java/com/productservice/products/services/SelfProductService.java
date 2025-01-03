@@ -48,9 +48,33 @@ public class SelfProductService implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Long Id, Product product) {
-        return null;
+    public Product updateProduct(Long Id, Product product) throws ProductNotFoundExeption {
+        Optional<Product> existingProductOptional = productRepository.findById(Id);
+        if (existingProductOptional.isEmpty()) {
+            throw new ProductNotFoundExeption(Id, "Product does not exist to update");
+        }
+        Product existingProduct = existingProductOptional.get();
+
+        // Update only non-null fields
+        if (product.getTitle() != null) {
+            existingProduct.setTitle(product.getTitle());
+        }
+        if (product.getDescription() != null) {
+            existingProduct.setDescription(product.getDescription());
+        }
+        if (product.getPrice() != null) {
+            existingProduct.setPrice(product.getPrice());
+        }
+        if (product.getCategory() != null) {
+            Category category = product.getCategory();
+            if (category.getId() == null) {
+                category = categoryRepository.save(category);
+            }
+            existingProduct.setCategory(category);
+        }
+        return productRepository.save(existingProduct);
     }
+
 
     @Override
     public void deleteProduct(Long Id) throws ProductNotFoundExeption {
