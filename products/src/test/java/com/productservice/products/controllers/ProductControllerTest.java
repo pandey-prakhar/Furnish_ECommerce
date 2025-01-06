@@ -7,6 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -31,5 +35,43 @@ class ProductControllerTest {
         Product productFromController= productController.getProductById(1L).getBody();// getBody method extracts product from response entity.
         //Assert
         assertEquals(productFromService, productFromController);
+    }
+
+    @Test
+    void invalidGetProductByIdThrowsException() throws ProductNotFoundExeption {
+        //Arrange
+        Long productId = 100L;
+        String message = "Product not found";
+        when(productService.getProductById(productId)).thenThrow(new ProductNotFoundExeption(productId,message));
+        ProductController productController = new ProductController(productService);
+        //Act & Assert
+        assertThrows(ProductNotFoundExeption.class, () -> productController.getProductById(productId).getBody());
+    }
+
+    @Test
+    void validGetAllProducts(){
+        //Arrange
+        ArrayList<Product> productsFromService = new ArrayList<>();
+        Product product1 = new Product();
+        product1.setId(1L);
+        product1.setTitle("Hinge from Cryatal");
+        product1.setDescription("Hinges");
+
+        Product product2 = new Product();
+        product2.setId(2L);
+        product2.setTitle("Hinges from Fabista");
+        product2.setDescription("Hinges");
+
+        productsFromService.add(product1);
+        productsFromService.add(product2);
+        when(productService.getAllProducts()).thenReturn(productsFromService);
+
+        //Act
+        ProductController productController = new ProductController(productService);
+        List<Product> products = productController.getAllProducts().getBody();
+
+        //Assert
+        assertIterableEquals(productsFromService, products);
+
     }
 }
