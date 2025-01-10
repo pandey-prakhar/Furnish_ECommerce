@@ -10,12 +10,12 @@ import lombok.Setter;
 import javax.annotation.processing.Generated;
 import java.util.Date;
 
-@MappedSuperclass
 @Getter
 @Setter
+@MappedSuperclass
 public abstract class BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     private boolean deleted;
 }
