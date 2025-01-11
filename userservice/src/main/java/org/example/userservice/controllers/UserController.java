@@ -30,11 +30,12 @@ public class UserController {
 
     @PostMapping("/login")
     public Token login(@RequestBody LoginRequestDto requestDto) {
-        return new Token();
+        return userService.login(requestDto.getEmail(), requestDto.getPassword());
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(LogOutRequestDto requestDto) {
+    public ResponseEntity<Void> logout(@RequestBody LogOutRequestDto requestDto) {
+        userService.logout(requestDto.getToken());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

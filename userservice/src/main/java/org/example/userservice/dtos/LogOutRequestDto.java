@@ -7,5 +7,5 @@ import org.example.userservice.models.Token;
 @Getter
 @Setter
 public class LogOutRequestDto {
-    private Token token;
+    private String token;
 }
