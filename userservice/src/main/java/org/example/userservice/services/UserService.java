@@ -1,5 +1,6 @@
 package org.example.userservice.services;
 
+import org.example.userservice.exceptions.InvalidTokenException;
 import org.example.userservice.exceptions.PasswordMismatchException;
 import org.example.userservice.exceptions.UserNotFoundException;
 import org.example.userservice.models.Token;
@@ -9,6 +10,7 @@ import org.example.userservice.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -53,15 +55,25 @@ public class UserService {
     public void logout(String tokenValue) {
         Optional<Token> tokenOptional= tokenRepository.findByValueAndDeleted(tokenValue, false);
         if (tokenOptional.isEmpty()) {
-            throw new UserNotFoundException("User not found with token:");
+            throw new InvalidTokenException("The token is invalid, deleted, or has expired.");
         }
         Token token = tokenOptional.get();
         token.setDeleted(true);
         tokenRepository.save(token);
     }
 
-    public User validateToken(String token) {
-        return null;
+    public User validateToken(String tokenValue) {
+        Optional<Token> tokenOptional = tokenRepository.findByValueAndDeletedAndExpirationDateGreaterThan(
+                tokenValue,
+                false,
+                new Date() // Current date
+        );
+
+        if (tokenOptional.isEmpty()) {
+            throw new InvalidTokenException("The token is invalid, deleted, or has expired.");
+        }
+
+        return tokenOptional.get().getUser();
     }
 
 }
