@@ -1,5 +1,7 @@
 package com.productservice.products.controllers;
 
+import com.productservice.products.commons.AuthCommans;
+import com.productservice.products.dtos.UserDto;
 import com.productservice.products.exeptions.ProductNotFoundExeption;
 import com.productservice.products.models.Product;
 import com.productservice.products.services.ProductService;
@@ -15,9 +17,11 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
+    private AuthCommans authCommans;
 
-    public ProductController(@Qualifier("selfProductService") ProductService productService) {
+    public ProductController(@Qualifier("selfProductService") ProductService productService, AuthCommans authCommans) {
         this.productService = productService;
+        this.authCommans = authCommans;
     }
 
     @GetMapping
@@ -27,7 +31,15 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws ProductNotFoundExeption {
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id, @RequestHeader("authToken") String token ) throws ProductNotFoundExeption {
+
+        UserDto userDto= authCommans.validateToken(token);
+
+        if (userDto == null) {
+            ResponseEntity<Product> responseEntity= new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            return responseEntity;
+        }
+
         Product product = productService.getProductById(id);
         return ResponseEntity.ok(product); // Returns 200 OK with the product
     }
