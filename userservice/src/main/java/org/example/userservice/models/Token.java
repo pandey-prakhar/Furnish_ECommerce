@@ -28,7 +28,7 @@ public class Token extends BaseModel {
         token.setValue(RandomStringUtils.randomAlphanumeric(128)); // Example token value
 
         // Set the expiration date
-        LocalDateTime expirationDateTime = LocalDateTime.now().plusDays(1); // Token expires in 1 day
+        LocalDateTime expirationDateTime = LocalDateTime.now().plusDays(30); // Token expires in 1 day
         Instant expirationInstant = expirationDateTime.atZone(ZoneId.systemDefault()).toInstant();
         token.setExpirationDate(Date.from(expirationInstant));
 

@@ -4,6 +4,7 @@ import org.example.userservice.dtos.LogOutRequestDto;
 import org.example.userservice.dtos.LoginRequestDto;
 import org.example.userservice.dtos.SignUpRequestDto;
 import org.example.userservice.dtos.UserDto;
+import org.example.userservice.exceptions.InvalidTokenException;
 import org.example.userservice.models.Token;
 import org.example.userservice.models.User;
 import org.example.userservice.services.UserService;
@@ -39,10 +40,14 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/validate/{token}")
-    public UserDto validateToken(@PathVariable String token) {
-        User user= userService.validateToken(token);
-        return UserDto.from(user);
+    @GetMapping("/validate/{token}")
+    public ResponseEntity<UserDto> validateToken(@PathVariable String token) {
+        try {
+            User user = userService.validateToken(token);
+            return ResponseEntity.ok(UserDto.from(user));
+        } catch (InvalidTokenException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
     }
 
 }
