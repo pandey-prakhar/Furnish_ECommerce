@@ -1,5 +1,6 @@
 package org.example.userservice.security.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.userservice.models.Role;
 import org.example.userservice.models.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@JsonDeserialize
 public class CustomUserDetails implements UserDetails {
     private String username;
     private String password;
@@ -19,6 +21,10 @@ public class CustomUserDetails implements UserDetails {
     private boolean credentialsNonExpired;
     private boolean enabled;
 
+
+    public CustomUserDetails(){
+
+    }
 
     public CustomUserDetails(User user) {
         this.username=user.getEmail();

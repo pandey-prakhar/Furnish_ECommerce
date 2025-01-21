@@ -1,5 +1,6 @@
 package org.example.userservice.security.services;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.userservice.models.User;
 import org.example.userservice.repositories.UserRepository;
 import org.example.userservice.security.models.CustomUserDetails;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@JsonDeserialize
 public class CustomUserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
     public CustomUserDetailService(UserRepository userRepository) {
