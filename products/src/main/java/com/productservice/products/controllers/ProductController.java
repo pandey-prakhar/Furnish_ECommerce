@@ -31,14 +31,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id, @RequestHeader("authToken") String token ) throws ProductNotFoundExeption {
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id ) throws ProductNotFoundExeption {
 
-        UserDto userDto= authCommans.validateToken(token);
-
-        if (userDto == null) {
-            ResponseEntity<Product> responseEntity= new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-            return responseEntity;
-        }
+//        UserDto userDto= authCommans.validateToken(token);
+//
+//        if (userDto == null) {
+//            ResponseEntity<Product> responseEntity= new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+//            return responseEntity;
+//        }
 
         Product product = productService.getProductById(id);
         return ResponseEntity.ok(product); // Returns 200 OK with the product
